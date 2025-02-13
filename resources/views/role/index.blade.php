@@ -1,52 +1,64 @@
-<!-- filepath: /d:/Work/SmallProject/small-project/resources/views/user/index.blade.php -->
+<!-- filepath: /d:/Work/SmallProject/small-project/resources/views/role/index.blade.php -->
 @extends('adminlte::page')
 
-@section('title', 'Users')
+@section('title', 'Roles')
 
 @section('content_header')
-    <h1>Users</h1>
+    <h1>Roles</h1>
 @stop
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">User List</h3>
+        <h3 class="card-title">Role List</h3>
         <div class="card-tools">
-            <a href="{{ route('user.create') }}" class="btn btn-success">Create New User</a>
+            @if($adminAndMemberExist)
+                <button class="btn btn-success" disabled>Create New Role</button>
+            @else
+                <a href="{{ route('role.create') }}" class="btn btn-success">Create New Role</a>
+            @endif
         </div>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-hover text-center">
-            <thead >
+            <thead>
                 <tr>
                     <th>No</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Full Name</th>
-                    <th>Last Login</th>
-                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @foreach ($roles as $role)
                     <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->first_name . " " . $user->last_name }}</td>
-                        <td>{{ $user->last_login_at }}</td>
-                        <td>{{ $user->role->name }}</td>
+                        <td>{{ $role->id }}</td>
+                        <td>{{ $role->name }}</td>
+                        <td>{{ $role->created_at }}</td>
+                        <td>{{ $role->updated_at }}</td>
                         <td>
-                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})" data-toggle="modal" data-target="#confirmDeleteModal">Delete</button>
+                            <a href="{{ route('role.edit', $role->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $role->id }})" data-toggle="modal" data-target="#confirmDeleteModal">Delete</button>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
         <div class="d-flex justify-content-center mt-3">
-            {{ $users->links() }}
+            {{ $roles->links() }}
         </div>
     </div>
 </div>
@@ -61,7 +73,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this user?
+                Are you sure you want to delete this role?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -76,9 +88,9 @@
 </div>
 
 <script>
-    function confirmDelete(userId) {
+    function confirmDelete(roleId) {
         var form = document.getElementById('delete-form');
-        form.action = '/users/' + userId;
+        form.action = '/roles/' + roleId;
     }
 </script>
 @stop

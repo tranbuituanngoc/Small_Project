@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('index');
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
     });
-    // Route::get('/users', [UserController::class, 'index']);
     Route::prefix("users")->name("user.")->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -49,5 +49,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
         Route::patch('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix("roles")->name("role.")->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+        Route::get('/{id}', [RoleController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [RoleController::class, 'edit'])->name('edit');
+        Route::patch('/{id}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RoleController::class, 'destroy'])->name('destroy');
     });
 });

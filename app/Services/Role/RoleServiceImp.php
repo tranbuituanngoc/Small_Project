@@ -4,6 +4,7 @@ namespace App\Services\Role;
 
 use App\Repositories\RoleRepository;
 use \Exception;
+use Illuminate\Support\Facades\Log;
 
 class RoleServiceImp implements RoleService
 {
@@ -21,21 +22,28 @@ class RoleServiceImp implements RoleService
 
     public function create($data)
     {
+        Log::info('Check: ' . $this->checkAdminAndMemberRole());
         if (!$this->checkAdminAndMemberRole()) {
-            if ($this->roleRepository->find('name', $data->name)) {
+            if ($this->roleRepository->find('name', $data['name'])) {
                 throw new Exception('The role name is already exist');
             }
             $this->roleRepository->create($data);
+        } else {
+            throw new Exception('Cannot create a new role if Admin and Member already exist.');
         }
-        throw new Exception('Cannot create a new role if Admin and Member already exist.');
     }
 
     public function update($id, $data)
     {
-        if ($this->roleRepository->find('name', $data->name)) {
-            throw new Exception('The role name is already exist');
+        $role = $this->roleRepository->find($id);
+        if ($role) {
+            if (isset($data['name']) && $this->roleRepository->find('name', $data['name'])) {
+                throw new Exception('The role name is already exist');
+            }
+            $this->roleRepository->update($id, $data);
+        } else {
+            throw new Exception('Role not found');
         }
-        $this->roleRepository->update($id, $data);
     }
 
     public function delete($id)
@@ -48,12 +56,12 @@ class RoleServiceImp implements RoleService
 
     public function find($id)
     {
-        $this->roleRepository->find($id);
+        return $this->roleRepository->find($id);
     }
 
     public function paginate($perPage)
     {
-        $this->roleRepository->paginate($perPage);
+        return  $this->roleRepository->paginate($perPage);
     }
 
     /**
@@ -62,7 +70,7 @@ class RoleServiceImp implements RoleService
      * @param void
      * @return bool
      */
-    private function checkAdminAndMemberRole()
+    public function checkAdminAndMemberRole()
     {
         $adminRole = $this->roleRepository->findBy('name', 'admin');
         $memberRole = $this->roleRepository->findBy('name', 'member');

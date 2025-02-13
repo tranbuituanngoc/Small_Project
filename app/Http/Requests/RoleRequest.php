@@ -24,12 +24,10 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         if ($this->isMethod('post')) {
-            // Rules for creating a hotel
             return [
                 'name' => ['required', 'string', 'max:255', 'unique:roles'],
             ];
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
-            // Rules for updating a hotel
             return [
                 'name' => ['sometimes', 'string', 'max:255', 'unique:roles'],
             ];
@@ -45,7 +43,6 @@ class RoleRequest extends FormRequest
     {
         return [
             'name.required' => 'Name is required',
-            'name.string' => 'Name must be a string',
             'name.max' => 'Name must not exceed 255 characters',
             'name.unique' => 'Name already exists',
         ];
