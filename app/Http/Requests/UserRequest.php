@@ -30,17 +30,8 @@ class UserRequest extends FormRequest
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
             // Rules for updating a user
             return [
-                'username' => ['sometimes', 'string', 'max:255', 'unique:users,username,' . $this->user->id],
-                'email' => ['sometimes', 'string', 'email', 'max:100', 'unique:users,email,' . $this->user->id],
-                'password' => [
-                    'sometimes',
-                    'string',
-                    'min:8',
-                    'regex:/[A-Z]/',
-                    'regex:/[a-z]/',
-                    'regex:/[0-9]/',
-                    'regex:/[@$!%*?&#]/'
-                ],
+                'username' => ['sometimes', 'string', 'max:255'],
+                'email' => ['sometimes', 'string', 'email', 'max:100'],
                 'first_name' => ['sometimes', 'string', 'max:255'],
                 'last_name' => ['sometimes', 'string', 'max:255'],
                 'avatar' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
