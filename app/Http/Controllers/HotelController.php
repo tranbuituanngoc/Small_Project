@@ -9,6 +9,7 @@ use App\Services\Hotel\HotelService;
 use App\Models\Hotel;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class HotelController extends Controller
@@ -24,14 +25,26 @@ class HotelController extends Controller
 
     public function index(Request $request)
     {
+        $perPage = config('app.per_page');
+
         $user = Auth::user();
+        $hotels = [];
+
         if ($user->role && $user->role->name === 'Admin') {
-            $hotels = Hotel::all();
+            $hotels = $this->hotelService->search(
+                $request->input('cityId'),
+                $request->input('hotelCode'),
+                $request->input('hotelName')
+            )->paginate($perPage);
         } else {
-            $hotels = $user->hotels;
+            $hotels = $this->hotelService->searchForUser(
+                $user->id,
+                $request->input('cityId'),
+                $request->input('hotelCode'),
+                $request->input('hotelName')
+            )->paginate($perPage);
         }
 
-        $hotels = Hotel::all();
         $cities = $this->cityRepository->all();
 
         return view('hotel.index', compact('hotels', 'cities'));
@@ -48,11 +61,53 @@ class HotelController extends Controller
     {
         try {
             $data = $request->validated();
+            $data['user_id'] = Auth::id();
             $this->hotelService->create($data);
 
-            return redirect()->route('hotels.index')->with('success', 'Hotel created successfully.');
+            return redirect()->route('hotel.index');
         } catch (Exception $e) {
-            return redirect()->route('hotels.create')->with('error', 'An error occurred while creating the hotel.');
+            Log::error($e->getMessage());
+            return redirect()->route('hotel.create');
+        }
+    }
+
+    public function view($id)
+    {
+        $hotel = $this->hotelService->find($id);
+
+        return view('hotel.view', compact('hotel'));
+    }
+
+    public function edit($id)
+    {
+        $hotel = $this->hotelService->find($id);
+        $cities = $this->cityRepository->all();
+
+        return view('hotel.edit', compact('hotel', 'cities'));
+    }
+
+    public function update(HotelRequest $request, $id)
+    {
+        try {
+            $data = $request->validated();
+            $this->hotelService->update($data, $id);
+
+            return redirect()->route('hotel.index');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('hotel.edit', $id);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $this->hotelService->delete($id);
+
+            return redirect()->route('hotel.index');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('hotel.index');
         }
     }
 }

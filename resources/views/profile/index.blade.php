@@ -36,7 +36,8 @@
                     <label for="avatar">Avatar:</label>
                     <input type="file" class="form-control" id="avatar" name="avatar">
                     @if($user->avatar)
-                        <img src="{{ $user->avatar_url }}" alt="Avatar" class="img-thumbnail mt-2" width="100" height="100">
+
+                        <img src="{{ $user->getAvatarUrl() }}" alt="Avatar" class="img-thumbnail mt-2" width="100" height="100">
                     @endif
                 </div>
 

@@ -10,4 +10,6 @@ interface HotelService
     public function delete($id);
     public function find($id);
     public function paginate($perPage);
+    public function search($cityId = null, $hotelCode = null, $hotelName = null);
+    public function searchForUser($userId, $cityId = null, $hotelCode = null, $hotelName = null);
 }

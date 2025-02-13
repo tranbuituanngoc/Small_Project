@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('hotel_code', 20)->unique();
             $table->string('email', 100);
+            $table->string('tel', 10);
             $table->string('fax', 25);
             $table->string('company_name');
             $table->string('tax_code', 20);

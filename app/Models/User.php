@@ -47,7 +47,7 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function getAvatarUrlAttribute()
+    public function getAvatarUrl()
     {
         return $this->avatar ? asset('images/' . $this->avatar) : asset('images/default-avatar.png');
     }

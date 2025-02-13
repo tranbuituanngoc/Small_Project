@@ -5,6 +5,7 @@ namespace App\Services\Hotel;
 use App\Repositories\HotelRepository;
 use App\Repositories\CityRepository;
 use \Exception;
+use Illuminate\Support\Facades\Log;
 
 class HotelServiceImp implements HotelService
 {
@@ -24,26 +25,27 @@ class HotelServiceImp implements HotelService
 
     public function create($data)
     {
-        if ($this->hotelRepository->find('name', $data->name)) {
-            throw new Exception('The hotel name is already exist');
+        if ($this->hotelRepository->findBy('name', $data['name'])) {
+            throw new Exception('The hotel name already exists');
         }
-        if ($this->hotelRepository->find('hotel_code', $data->hotel_code)) {
-            throw new Exception('The hotel code is already exist');
+        if ($this->hotelRepository->findBy('hotel_code', $data['hotel_code'])) {
+            throw new Exception('The hotel code already exists');
         }
         $this->hotelRepository->create($data);
     }
 
-    public function update($id, $data)
+    public function update($data, $id)
     {
         $hotel = $this->hotelRepository->find($id);
+
         if ($hotel) {
-            if ($this->hotelRepository->find('name', $data->name)) {
-                throw new Exception('The hotel name is already exist');
+            if ($hotel->name !== $data['name'] && $this->hotelRepository->findBy('name', $data['name'])) {
+                throw new Exception('The hotel name already exists');
             }
-            if ($this->hotelRepository->find('hotel_code', $data->hotel_code)) {
-                throw new Exception('The hotel code is already exist');
+            if ($hotel->hotel_code !== $data['hotel_code'] && $this->hotelRepository->findBy('hotel_code', $data['hotel_code'])) {
+                throw new Exception('The hotel code already exists');
             }
-            $this->hotelRepository->update($id, $data);
+            $this->hotelRepository->update($data, $id);
         }
         throw new Exception('Hotel not found');
     }
@@ -92,6 +94,30 @@ class HotelServiceImp implements HotelService
             $query->where('name', 'like', '%' . $hotelName . '%');
         }
 
-        return $query->get();
+        return $query->orderBy('city_id', 'asc');
+    }
+
+    public function searchForUser($userId, $cityId = null, $hotelCode = null, $hotelName = null)
+    {
+        $query = $this->hotelRepository->query()->where('user_id', $userId);
+
+        if ($cityId) {
+            $city = $this->cityRepository->findBy('id', $cityId);
+            if ($city) {
+                $query->where('city_id', $city->id);
+            } else {
+                throw new Exception('City not found');
+            }
+        }
+
+        if ($hotelCode) {
+            $query->where('hotel_code', $hotelCode);
+        }
+
+        if ($hotelName) {
+            $query->where('name', 'like', '%' . $hotelName . '%');
+        }
+
+        return $query->orderBy('city_id', 'asc');
     }
 }
