@@ -80,7 +80,6 @@ class UserController extends Controller
                 $data['avatar'] = $avatarName;
             }
 
-
             $this->userService->update($data, $id);
 
             return redirect()->route('user.index');

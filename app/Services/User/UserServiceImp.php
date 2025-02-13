@@ -132,8 +132,30 @@ class UserServiceImp implements UserService
     public function updateProfile(array $data, $id)
     {
         $user = $this->userRepository->find($id);
+
+        if ($user->email !== $data['email']) {
+            $existUser = $this->userRepository->findBy('email', $data['email']);
+            if ($existUser) {
+                throw new \Exception('Email already exists');
+            }
+        }
+        if ($user->username !== $data['username']) {
+            $existUser = $this->userRepository->findBy('username', $data['username']);
+            if ($existUser) {
+                throw new \Exception('Username already exists');
+            }
+        }
         if ($user) {
-            return $this->userRepository->update($data, $id);
+            $data['username'] = !empty($data['username']) ? $data['username'] : $user->username;
+            $data['email'] = !empty($data['email']) ? $data['email'] : $user->email;
+            $data['password'] = !empty($data['password']) ? bcrypt($data['password']) : $user->password;
+            $data['first_name'] = !empty($data['first_name']) ? $data['first_name'] : $user->first_name;
+            $data['last_name'] = !empty($data['last_name']) ? $data['last_name'] : $user->last_name;
+            $data['avatar'] = !empty($data['avatar']) ? $data['avatar'] : $user->avatar;
+            log::info($data['avatar']);
+            $this->userRepository->update($data, $id);
+            Log::info($data);
+            return $user;
         }
         throw new \Exception('User not found');
     }

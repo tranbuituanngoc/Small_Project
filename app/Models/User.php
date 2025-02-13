@@ -47,9 +47,15 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the URL of the user's avatar.
+     *
+     * @return string
+     */
     public function getAvatarUrl()
     {
-        return $this->avatar ? asset('images/' . $this->avatar) : asset('images/default-avatar.png');
+        return isset($this->avatar) ? asset('images/' . $this->avatar) : asset('images/default_avatar.png');
     }
 
     /**
