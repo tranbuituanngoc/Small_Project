@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('first_name');
             $table->string('last_name');
-            $table->timestamp('login_at')->nullable();
+            $table->timestamp('last_login_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

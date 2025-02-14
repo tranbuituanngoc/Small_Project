@@ -1,3 +1,4 @@
+<!-- filepath: /d:/Work/SmallProject/small-project/resources/views/user/index.blade.php -->
 @extends('adminlte::page')
 
 @section('title', 'Users')
@@ -7,56 +8,72 @@
 @stop
 
 @section('content')
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">User List</h3>
+        <div class="card-tools">
+            <a href="{{ route('user.create') }}" class="btn btn-success">Create New User</a>
         </div>
-    @endif
-
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createUserModal">
-        Create New User
-    </button>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($users as $user)
-                <tr>
-                    <td><span>{{ $user->name }}</span></td>
-                    <td>{{ $user->email }}</td>
-                    <td>
-                        <button class="btn btn-warning edit-user-btn" data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-email="{{ $user->email }}">Edit</button>
-                        <button class="btn btn-danger delete-user-btn" data-id="{{ $user->id }}">Delete</button>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div class="d-flex justify-content-center">
-        {{ $users->links() }}
     </div>
-     @include('user.modal.create_modal')
-     @include('user.modal.edit_modal')
-     @include('user.modal.delete_modal')
-@stop
+    <div class="card-body">
+        <table class="table table-bordered table-hover text-center">
+            <thead >
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Last Login</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($users as $user)
+                    <tr>
+                        <td>{{ $user->username }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->first_name . " " . $user->last_name }}</td>
+                        <td>{{ $user->last_login_at }}</td>
+                        <td>{{ $user->role->name }}</td>
+                        <td>
+                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})" data-toggle="modal" data-target="#confirmDeleteModal">Delete</button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 
-@section('js')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-        var createUserUrl = '{{ route('user.store') }}';
-        var updateUserUrl = '{{ route('user.update', ':id') }}';
-        var deleteUserUrl = '{{ route('user.destroy', ':id') }}';
-    </script>
-    <script src="{{ asset('js/user.js') }}"></script>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this user?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="delete-form" action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(userId) {
+        var form = document.getElementById('delete-form');
+        form.action = '/users/' + userId;
+    }
+</script>
 @stop
