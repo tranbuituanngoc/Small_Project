@@ -59,6 +59,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the image URL for the user.
+     *
+     * @return string
+     */
+    public function adminlte_image()
+    {
+        return isset($this->avatar) ? asset('images/' . $this->avatar) : asset('images/default_avatar.png');
+    }
+
+    /**
      * Get the role that owns the user.
      */
     public function role()
