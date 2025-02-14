@@ -15,6 +15,7 @@ class RoleController extends Controller
     public function __construct(RoleService $roleService)
     {
         $this->roleService = $roleService;
+        $this->middleware('checkUserRole:ADMIN');
     }
 
     public function index()
@@ -37,10 +38,10 @@ class RoleController extends Controller
         try {
             $data = $request->validated();
             $this->roleService->create($data);
-            return redirect()->route('role.index')->with('success', 'Role created successfully');
+            return redirect()->route('role.index')->with('success', __('messages.role_created_successfully'));
         } catch (\Exception $e) {
             Log::error("Create Role Error: " . $e->getMessage());
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error', __('messages.role_create_error'));
         }
     }
 
@@ -55,10 +56,10 @@ class RoleController extends Controller
         try {
             $data = $request->validated();
             $this->roleService->update($data, $id);
-            return redirect()->route('role.index')->with('success', 'Role updated successfully');
+            return redirect()->route('role.index')->with('success', __('messages.role_updated_successfully'));
         } catch (\Exception $e) {
             Log::error("Update Role Error: " . $e->getMessage());
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error', __('messages.role_update_error'));
         }
     }
 
@@ -68,15 +69,15 @@ class RoleController extends Controller
             $role = $this->roleService->find($id);
 
             if ($role->users()->count() > 0) {
-                return redirect()->route('role.index')->with('error', 'Cannot delete role because it is assigned to one or more users.');
+                return redirect()->route('role.index')->with('error', __('messages.role_assigned_to_users'));
             }
 
             $this->roleService->delete($id);
 
-            return redirect()->route('role.index')->with('success', 'Role deleted successfully.');
+            return redirect()->route('role.index')->with('success', __('messages.role_deleted_successfully'));
         } catch (Exception $e) {
             Log::error("Delete Role Error: " . $e->getMessage());
-            return redirect()->route('role.index')->with('error', 'An error occurred while deleting the role.');
+            return redirect()->route('role.index')->with('error', __('messages.role_delete_error'));
         }
     }
 }

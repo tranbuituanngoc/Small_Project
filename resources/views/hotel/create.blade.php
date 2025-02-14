@@ -51,8 +51,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="telephone">Telephone</label>
-                        <input type="text" name="telephone" class="form-control" value="{{ old('telephone') }}">
+                        <label for="tel">Telephone</label>
+                        <input type="text" name="tel" class="form-control" value="{{ old('tel') }}">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>

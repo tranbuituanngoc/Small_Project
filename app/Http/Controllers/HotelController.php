@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HotelRequest;
 use App\Services\Hotel\HotelService;
 use App\Services\City\CityService;
+use App\Constant\UserRole;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -14,13 +15,14 @@ class HotelController extends Controller
 {
     protected $cityService;
     protected $hotelService;
+    protected $adminRole;
 
-    const ADMIN_ROLE = 'ADMIN';
 
     public function __construct(CityService $cityService, HotelService $hotelService)
     {
         $this->cityService = $cityService;
         $this->hotelService = $hotelService;
+        $this->adminRole = UserRole::ADMIN;
     }
 
     public function index(Request $request)
@@ -30,7 +32,7 @@ class HotelController extends Controller
         $user = Auth::user();
         $hotels = [];
 
-        if ($user->role && $user->role->name === self::ADMIN_ROLE) {
+        if ($user->role && $user->role->name === $this->adminRole) {
             $hotels = $this->hotelService->search(
                 $request->input('cityId'),
                 $request->input('hotelCode'),
@@ -63,11 +65,11 @@ class HotelController extends Controller
             $data = $request->validated();
             $data['user_id'] = Auth::id();
             $this->hotelService->create($data);
-
-            return redirect()->route('hotel.index')->with('success', 'Hotel created successfully');
+            Log::info(__('messages.hotel_created_successfully'));
+            return redirect()->route('hotel.index')->with('success', __('messages.hotel_created_successfully'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.create')->with('error', $e->getMessage());
+            return redirect()->route('hotel.create')->with('error', __('messages.hotel_create_error'));
         }
     }
 
@@ -92,10 +94,10 @@ class HotelController extends Controller
             $data = $request->validated();
             $this->hotelService->update($data, $id);
 
-            return redirect()->route('hotel.index')->with('success', 'Hotel updated successfully');
+            return redirect()->route('hotel.index')->with('success', __('messages.hotel_updated_successfully'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.edit', $id)->with('error', $e->getMessage());
+            return redirect()->route('hotel.edit', $id)->with('error', __('messages.hotel_update_error'));
         }
     }
 
@@ -104,10 +106,10 @@ class HotelController extends Controller
         try {
             $this->hotelService->delete($id);
 
-            return redirect()->route('hotel.index')->with('success', 'Hotel deleted successfully');
+            return redirect()->route('hotel.index')->with('success', __('messages.hotel_deleted_successfully'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.index')->with('error', $e->getMessage());
+            return redirect()->route('hotel.index')->with('error', __('messages.hotel_delete_error'));
         }
     }
 }

@@ -55,10 +55,14 @@ class ProfileController extends Controller
             }
             $this->userService->updateProfile($data, $user->id);
 
-            return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');;
+            return redirect()->route('profile.index')->with('success', __(
+                'messages.profile_updated_successfully'
+            ));;
         } catch (Exception $e) {
             Log::error("Update Profile Error: " . $e->getMessage());
-            return redirect()->route('profile.index')->with('error', 'Profile updated failed.');
+            return redirect()->route('profile.index')->with('error', __(
+                'messages.profile_update_error'
+            ));
         }
     }
 }
