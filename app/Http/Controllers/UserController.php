@@ -51,10 +51,10 @@ class UserController extends Controller
 
             $this->userService->create($data);
 
-            return redirect()->route('user.index');
+            return redirect()->route('user.index')->with('success', 'User created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error("Create User Error: " . $e->getMessage());
-            return redirect()->route('user.create');
+            return redirect()->route('user.create')->with('error', $e->getMessage());
         }
     }
 
@@ -82,12 +82,12 @@ class UserController extends Controller
 
             $this->userService->update($data, $id);
 
-            return redirect()->route('user.index');
+            return redirect()->route('user.index')->with('success', 'User updated successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->route('user.edit', $id);
+            return redirect()->route('user.edit', $id)->with('error', $e->getMessage());
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('user.edit', $id);
+            return redirect()->route('user.edit', $id)->with('error', $e->getMessage());
         }
     }
 
@@ -96,9 +96,9 @@ class UserController extends Controller
         try {
             $this->userService->delete($id);
 
-            return redirect()->route('user.index');
+            return redirect()->route('user.index')->with('success', 'User deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('user.index');
+            return redirect()->route('user.index')->with('error', 'An error occurred while deleting the user.');
         }
     }
 }

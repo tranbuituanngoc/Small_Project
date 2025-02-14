@@ -64,10 +64,10 @@ class HotelController extends Controller
             $data['user_id'] = Auth::id();
             $this->hotelService->create($data);
 
-            return redirect()->route('hotel.index');
+            return redirect()->route('hotel.index')->with('success', 'Hotel created successfully');
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.create');
+            return redirect()->route('hotel.create')->with('error', $e->getMessage());
         }
     }
 
@@ -92,10 +92,10 @@ class HotelController extends Controller
             $data = $request->validated();
             $this->hotelService->update($data, $id);
 
-            return redirect()->route('hotel.index');
+            return redirect()->route('hotel.index')->with('success', 'Hotel updated successfully');
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.edit', $id);
+            return redirect()->route('hotel.edit', $id)->with('error', $e->getMessage());
         }
     }
 
@@ -104,10 +104,10 @@ class HotelController extends Controller
         try {
             $this->hotelService->delete($id);
 
-            return redirect()->route('hotel.index');
+            return redirect()->route('hotel.index')->with('success', 'Hotel deleted successfully');
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.index');
+            return redirect()->route('hotel.index')->with('error', $e->getMessage());
         }
     }
 }

@@ -33,11 +33,11 @@ class ProfileRequest extends FormRequest
             'email.required' => 'Email is required',
             'email.email' => 'Email must be a valid email address',
             'avatar.image' => 'Avatar must be an image',
-            'avatar.mimes' => 'Avatar must be a file of type: jpeg, png, jpg, gif, svg',
+            'avatar.mimes' => 'Avatar must be a file of type: :mimes',
             'avatar.max' => 'Avatar must be less than 10MB',
             'first_name.required' => 'First name is required',
             'last_name.required' => 'Last name is required',
-            'password.min' => 'Password must be at least 8 characters',
+            'password.min' => 'Password must be at least :min characters',
             'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character',
         ];
     }

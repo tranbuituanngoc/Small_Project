@@ -29,7 +29,7 @@ class RoleRequest extends FormRequest
             ];
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
             return [
-                'name' => ['sometimes', 'string', 'max:255', 'unique:roles'],
+                'name' => ['sometimes', 'string', 'max:255'],
             ];
         }
     }
@@ -43,7 +43,7 @@ class RoleRequest extends FormRequest
     {
         return [
             'name.required' => 'Name is required',
-            'name.max' => 'Name must not exceed 255 characters',
+            'name.max' => 'Name must not exceed :max characters',
             'name.unique' => 'Name already exists',
         ];
     }

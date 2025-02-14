@@ -58,7 +58,7 @@ class ProfileController extends Controller
             return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');;
         } catch (Exception $e) {
             Log::error("Update Profile Error: " . $e->getMessage());
-            return redirect()->route('profile.index');
+            return redirect()->route('profile.index')->with('error', 'Profile updated failed.');
         }
     }
 }

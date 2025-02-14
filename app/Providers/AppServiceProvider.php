@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\City\CityService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
@@ -11,6 +12,7 @@ use App\Services\Role\RoleService;
 use App\Services\Role\RoleServiceImp;
 use App\Services\Hotel\HotelService;
 use App\Services\Hotel\HotelServiceImp;
+use App\Services\City\CityServiceImp;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(UserService::class, UserServiceImp::class);
         $this->app->singleton(RoleService::class, RoleServiceImp::class);
         $this->app->singleton(HotelService::class, HotelServiceImp::class);
+        $this->app->singleton(CityService::class, CityServiceImp::class);
     }
 
     /**
