@@ -10,4 +10,5 @@ interface RoleService
     public function delete($id);
     public function find($id);
     public function paginate($perPage);
+    public function checkAdminAndMemberRole();
 }
