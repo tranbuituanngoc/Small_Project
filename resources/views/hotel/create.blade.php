@@ -7,6 +7,17 @@
 @stop
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">New Hotel</h3>
@@ -40,8 +51,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="telephone">Telephone</label>
-                        <input type="text" name="telephone" class="form-control" value="{{ old('telephone') }}">
+                        <label for="tel">Telephone</label>
+                        <input type="text" name="tel" class="form-control" value="{{ old('tel') }}">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
