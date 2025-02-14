@@ -16,7 +16,7 @@ class RoleServiceImp implements RoleService
 
     public function all()
     {
-        $this->roleRepository->all();
+        return  $this->roleRepository->all();
     }
 
     public function create($data)
