@@ -47,27 +47,34 @@
                         <select class="form-control" name="city_id">
                             <option value="">--Select City--</option>
                             @foreach ($cities as $city)
-                                <option value="{{ $city->id }}" {{ old('city_id', $hotel->city_id) == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
+                                <option value="{{ $city->id }}"
+                                    {{ old('city_id', $hotel->city_id) == $city->id ? 'selected' : '' }}>
+                                    {{ $city->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="tel">Telephone</label>
-                        <input type="text" name="tel" class="form-control" value="{{ old('tel', $hotel->tel) }}">
+                        <input type="text" name="tel"
+                        class="form-control" value="{{ old('tel', $hotel->tel) }}">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ old('email', $hotel->email) }}">
+                        <input type="email" name="email"
+                        class="form-control" value="{{ old('email', $hotel->email) }}">
                     </div>
                     <div class="form-group">
                         <label for="address1">Address 1</label>
-                        <textarea name="address1" class="form-control">{{ old('address1', $hotel->address1) }}</textarea>
+                        <textarea name="address1"
+                        class="form-control">{{ old('address1', $hotel->address1) }}</textarea>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="hotel_code">Hotel Code</label>
-                        <input type="text" name="hotel_code" class="form-control" value="{{ old('hotel_code', $hotel->hotel_code) }}">
+                        <input type="text" name="hotel_code"
+                        class="form-control" value="{{ old('hotel_code', $hotel->hotel_code) }}">
                     </div>
                     <div class="form-group">
                         <label for="fax">FAX</label>
@@ -75,15 +82,18 @@
                     </div>
                     <div class="form-group">
                         <label for="company_name">Company Name</label>
-                        <input type="text" name="company_name" class="form-control" value="{{ old('company_name', $hotel->company_name) }}">
+                        <input type="text" name="company_name"
+                        class="form-control" value="{{ old('company_name', $hotel->company_name) }}">
                     </div>
                     <div class="form-group">
                         <label for="tax_code">Tax Code</label>
-                        <input type="text" name="tax_code" class="form-control" value="{{ old('tax_code', $hotel->tax_code) }}">
+                        <input type="text" name="tax_code"
+                        class="form-control" value="{{ old('tax_code', $hotel->tax_code) }}">
                     </div>
                     <div class="form-group">
                         <label for="address2">Address 2</label>
-                        <textarea name="address2" class="form-control">{{ old('address2', $hotel->address2) }}</textarea>
+                        <textarea name="address2"
+                        class="form-control">{{ old('address2', $hotel->address2) }}</textarea>
                     </div>
                 </div>
             </div>

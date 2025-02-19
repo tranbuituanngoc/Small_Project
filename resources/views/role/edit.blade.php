@@ -37,7 +37,8 @@
             @method('PATCH')
             <div class="form-group">
                 <label for="name">Role Name:</label>
-                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $role->name) }}" required>
+                <input type="text" id="name" name="name" class="form-control"
+                value="{{ old('name', $role->name) }}" required>
                 @error('name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

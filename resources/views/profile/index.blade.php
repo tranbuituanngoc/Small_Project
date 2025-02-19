@@ -53,21 +53,25 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" value="{{ $user->username }}" required>
+                            <input type="text" class="form-control" id="username" name="username"
+                            value="{{ $user->username }}" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
+                            <input type="email" class="form-control" id="email" name="email"
+                            value="{{ $user->email }}" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $user->first_name }}" required>
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                            value="{{ $user->first_name }}" required>
                         </div>
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}" required>
+                            <input type="text" class="form-control" id="last_name" name="last_name"
+                            value="{{ $user->last_name }}" required>
                         </div>
                     </div>
                     <div class="col-md-12">

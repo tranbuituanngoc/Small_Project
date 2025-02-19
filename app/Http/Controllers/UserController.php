@@ -52,10 +52,12 @@ class UserController extends Controller
 
             $this->userService->create($data);
 
-            return redirect()->route('user.index')->with('success', __('messages.user_created_successfully'));
+            return redirect()->route('user.index')
+                ->with('success', __('messages.user_created_successfully'));
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error("Create User Error: " . $e->getMessage());
-            return redirect()->route('user.create')->with('error', __('messages.user_create_error'));
+            return redirect()->route('user.create')
+                ->with('error', __('messages.user_create_error'));
         }
     }
 
@@ -83,12 +85,18 @@ class UserController extends Controller
 
             $this->userService->update($data, $id);
 
-            return redirect()->route('user.index')->with('success', __('messages.user_updated_successfully'));
+            return redirect()->route('user.index')
+                ->with('success', __('messages.user_updated_successfully'));
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->route('user.edit', $id)->with('error', __('messages.user_update_error'));
+            return redirect()->route('user.edit', $id)
+                ->with('error', __('messages.user_update_error'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('user.edit', $id)->with('error', __('messages.user_update_error'));
+            return redirect()->route('user.edit', $id)
+                ->with(
+                    'error',
+                    ('messages.user_update_error')
+                );
         }
     }
 
@@ -97,9 +105,11 @@ class UserController extends Controller
         try {
             $this->userService->delete($id);
 
-            return redirect()->route('user.index')->with('success', __('messages.user_deleted_successfully'));
+            return redirect()->route('user.index')
+                ->with('success', __('messages.user_deleted_successfully'));
         } catch (\Exception $e) {
-            return redirect()->route('user.index')->with('error', __('messages.user_delete_error'));
+            return redirect()->route('user.index')
+                ->with('error', __('messages.user_delete_error'));
         }
     }
 }

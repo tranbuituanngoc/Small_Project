@@ -103,8 +103,9 @@ class UserServiceImp implements UserService
 
             $this->userRepository->update($data, $id);
             return $user;
+        } else {
+            throw new \Exception('User not found');
         }
-        throw new \Exception('User not found');
     }
 
     /**
@@ -118,8 +119,9 @@ class UserServiceImp implements UserService
         $user = $this->userRepository->find($id);
         if ($user) {
             return $this->userRepository->delete($id);
+        } else {
+            throw new \Exception('User not found');
         }
-        throw new \Exception('User not found');
     }
 
     /**
@@ -152,12 +154,11 @@ class UserServiceImp implements UserService
             $data['first_name'] = !empty($data['first_name']) ? $data['first_name'] : $user->first_name;
             $data['last_name'] = !empty($data['last_name']) ? $data['last_name'] : $user->last_name;
             $data['avatar'] = !empty($data['avatar']) ? $data['avatar'] : $user->avatar;
-            log::info($data['avatar']);
             $this->userRepository->update($data, $id);
-            Log::info($data);
             return $user;
+        } else {
+            throw new \Exception('User not found');
         }
-        throw new \Exception('User not found');
     }
 
     /**
