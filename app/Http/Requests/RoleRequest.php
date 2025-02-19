@@ -29,7 +29,7 @@ class RoleRequest extends FormRequest
             ];
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
             return [
-                'name' => ['sometimes', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255'],
             ];
         }
     }

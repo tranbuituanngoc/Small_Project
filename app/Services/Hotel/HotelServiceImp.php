@@ -5,7 +5,6 @@ namespace App\Services\Hotel;
 use App\Repositories\HotelRepository;
 use App\Repositories\CityRepository;
 use \Exception;
-use Illuminate\Support\Facades\Log;
 
 class HotelServiceImp implements HotelService
 {
@@ -39,15 +38,22 @@ class HotelServiceImp implements HotelService
         $hotel = $this->hotelRepository->find($id);
 
         if ($hotel) {
-            if ($hotel->name !== $data['name'] && $this->hotelRepository->findBy('name', $data['name'])) {
+            if (
+                $hotel->name !== $data['name']
+                && $this->hotelRepository->findBy('name', $data['name'])
+            ) {
                 throw new Exception('The hotel name already exists');
             }
-            if ($hotel->hotel_code !== $data['hotel_code'] && $this->hotelRepository->findBy('hotel_code', $data['hotel_code'])) {
+            if (
+                $hotel->hotel_code !== $data['hotel_code']
+                && $this->hotelRepository->findBy('hotel_code', $data['hotel_code'])
+            ) {
                 throw new Exception('The hotel code already exists');
             }
             $this->hotelRepository->update($data, $id);
+        } else {
+            throw new Exception('Hotel not found');
         }
-        throw new Exception('Hotel not found');
     }
 
     public function delete($id)
@@ -55,8 +61,9 @@ class HotelServiceImp implements HotelService
         $hotel = $this->hotelRepository->find($id);
         if ($hotel) {
             $this->hotelRepository->delete($id);
+        } else {
+            throw new Exception('Hotel not found');
         }
-        throw new Exception('Hotel not found');
     }
 
     public function find($id)
@@ -64,8 +71,9 @@ class HotelServiceImp implements HotelService
         $hotel = $this->hotelRepository->find($id);
         if ($hotel) {
             return $hotel;
+        } else {
+            throw new Exception('Hotel not found');
         }
-        throw new Exception('Hotel not found');
     }
 
     public function paginate($perPage)

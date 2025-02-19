@@ -1,4 +1,3 @@
-<!-- filepath: /d:/Work/SmallProject/small-project/resources/views/role/create.blade.php -->
 @extends('adminlte::page')
 
 @section('title', 'Create Role')

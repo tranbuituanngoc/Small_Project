@@ -27,15 +27,19 @@
                         <select class="form-control" name="cityId">
                             <option value="">--Select City--</option>
                             @foreach ($cities as $city)
-                                <option value="{{ $city->id }}" {{ request('cityId') == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
+                                <option value="{{ $city->id }}" {{ request('cityId') == $city->id ? 'selected' : '' }}>
+                                    {{ $city->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="hotelCode" class="form-control" placeholder="Hotel Code" value="{{ request('hotelCode') }}">
+                        <input type="text" name="hotelCode"
+                        class="form-control" placeholder="Hotel Code" value="{{ request('hotelCode') }}">
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="hotelName" class="form-control" placeholder="Hotel Name" value="{{ request('hotelName') }}">
+                        <input type="text" name="hotelName"
+                        class="form-control" placeholder="Hotel Name" value="{{ request('hotelName') }}">
                     </div>
                     <div class="col-md-3">
                         <button type="submit" class="btn btn-primary">Search</button>
@@ -46,7 +50,7 @@
 
         <div class="card-body">
             <a href="{{ route('hotel.create') }}" class="btn btn-success mb-3 float-lg-right">Add New Hotel</a>
-            <table class="table table-bordered">
+            <table class="table table-bordered mb-3">
                 <thead>
                     <tr>
                         <th>City</th>
@@ -81,9 +85,12 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
-                                        <a href="{{ route('hotel.view', $hotel->id) }}" class="btn btn-sm btn-primary mx-1">View</a>
-                                        <a href="{{ route('hotel.edit', $hotel->id) }}" class="btn btn-sm btn-warning mx-1">Edit</a>
-                                        <button class="btn btn-sm btn-danger mx-1" onclick="confirmDelete({{ $hotel->id }})" data-toggle="modal" data-target="#confirmDeleteModal">Delete</button>
+                                        <a href="{{ route('hotel.view', $hotel->id) }}"
+                                            class="btn btn-sm btn-primary mx-1">View</a>
+                                        <a href="{{ route('hotel.edit', $hotel->id) }}"
+                                            class="btn btn-sm btn-warning mx-1">Edit</a>
+                                        <button class="btn btn-sm btn-danger mx-1" onclick="confirmDelete({{ $hotel->id }})"
+                                            data-toggle="modal" data-target="#confirmDeleteModal">Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -97,7 +104,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1"
+    role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

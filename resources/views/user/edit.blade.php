@@ -39,14 +39,16 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="first_name">First Name:</label>
-                        <input type="text" id="first_name" name="first_name" class="form-control" value="{{ old('first_name', $user->first_name) }}" required>
+                        <input type="text" id="first_name" name="first_name" class="form-control"
+                        value="{{ old('first_name', $user->first_name) }}" required>
                         @error('first_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name:</label>
-                        <input type="text" id="last_name" name="last_name" class="form-control" value="{{ old('last_name', $user->last_name) }}" required>
+                        <input type="text" id="last_name" name="last_name" class="form-control"
+                        value="{{ old('last_name', $user->last_name) }}" required>
                         @error('last_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -69,14 +71,16 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+                        <input type="email" id="email" name="email" class="form-control"
+                        value="{{ old('email', $user->email) }}" required>
                         @error('email')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" class="form-control" value="{{ old('username', $user->username) }}" required>
+                        <input type="text" id="username" name="username" class="form-control"
+                        value="{{ old('username', $user->username) }}" required>
                         @error('username')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -99,7 +103,9 @@
                             <input type="file" id="avatar" name="avatar" class="form-control-file" onchange="previewAvatar()">
                         </div>
                         <div class="ml-3">
-                            <img id="avatar-preview" src="{{ $user->avatar ? asset('images/' . $user->avatar) : '#' }}" alt="Avatar Preview" class="img-thumbnail" style="max-width: 100px; max-height: 100px; object-fit: contain;">
+                            <img id="avatar-preview"
+                            src="{{ $user->avatar ? asset('images/' . $user->avatar) : '#' }}" alt="Avatar Preview"
+                            class="img-thumbnail" style="max-width: 100px; max-height: 100px; object-fit: contain;">
                         </div>
                         @error('avatar')
                             <span class="text-danger">{{ $message }}</span>

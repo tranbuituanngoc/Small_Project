@@ -66,10 +66,12 @@ class HotelController extends Controller
             $data['user_id'] = Auth::id();
             $this->hotelService->create($data);
             Log::info(__('messages.hotel_created_successfully'));
-            return redirect()->route('hotel.index')->with('success', __('messages.hotel_created_successfully'));
+            return redirect()->route('hotel.index')
+                ->with('success', __('messages.hotel_created_successfully'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.create')->with('error', __('messages.hotel_create_error'));
+            return redirect()->route('hotel.create')
+                ->with('error', __('messages.hotel_create_error'));
         }
     }
 
@@ -94,10 +96,12 @@ class HotelController extends Controller
             $data = $request->validated();
             $this->hotelService->update($data, $id);
 
-            return redirect()->route('hotel.index')->with('success', __('messages.hotel_updated_successfully'));
+            return redirect()->route('hotel.index')
+                ->with('success', __('messages.hotel_updated_successfully'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.edit', $id)->with('error', __('messages.hotel_update_error'));
+            return redirect()->route('hotel.edit', $id)
+                ->with('error', __('messages.hotel_update_error'));
         }
     }
 
@@ -106,10 +110,12 @@ class HotelController extends Controller
         try {
             $this->hotelService->delete($id);
 
-            return redirect()->route('hotel.index')->with('success', __('messages.hotel_deleted_successfully'));
+            return redirect()->route('hotel.index')
+                ->with('success', __('messages.hotel_deleted_successfully'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('hotel.index')->with('error', __('messages.hotel_delete_error'));
+            return redirect()->route('hotel.index')
+                ->with('error', __('messages.hotel_delete_error'));
         }
     }
 }
