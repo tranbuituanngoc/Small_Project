@@ -46,4 +46,14 @@ class UserRepository extends EloquentRepository
     {
         return $this->model->paginate($perPage);
     }
+    /**
+     * Check if this user is referenced by any hotel.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function isReferencedByHotel($id)
+    {
+        return $this->model->find($id)->hotels()->exists();
+    }
 }

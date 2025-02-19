@@ -2,6 +2,7 @@
 
 namespace App\Services\Role;
 
+use App\Models\Role;
 use App\Repositories\RoleRepository;
 use \Exception;
 use Illuminate\Support\Facades\Log;
@@ -51,7 +52,12 @@ class RoleServiceImp implements RoleService
         if ($this->roleRepository->isReferencedByUser($id)) {
             throw new Exception('Cannot delete this role because it is referenced by a user.');
         }
-        $this->roleRepository->delete($id);
+        $role = $this->roleRepository->find($id);
+        if ($role) {
+            $this->roleRepository->delete($id);
+        } else {
+            throw new Exception('Role not found');
+        }
     }
 
     public function find($id)
