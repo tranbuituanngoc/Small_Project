@@ -26,6 +26,7 @@ return [
     'user_create_error' => 'An error occurred while creating the user',
     'user_update_error' => 'An error occurred while updating the user',
     'user_avatar_error' => 'An error occurred while uploading the avatar',
+    'user_assigned_to_hotels' => 'Cannot delete user because it is assigned to one or more hotels',
 
     //Profile
     'profile_updated_successfully' => 'Profile updated successfully',

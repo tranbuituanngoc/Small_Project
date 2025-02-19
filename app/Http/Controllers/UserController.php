@@ -103,6 +103,14 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
+            $user = $this->userService->find($id);
+            Log::info(1);
+            if ($user->hotels()->count() > 0) {
+                Log::info(2);
+                return redirect()->route('user.index')
+                    ->with('error', __('messages.user_assigned_to_hotels'));
+            }
+            Log::info(3);
             $this->userService->delete($id);
 
             return redirect()->route('user.index')

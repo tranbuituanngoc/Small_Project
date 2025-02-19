@@ -116,6 +116,9 @@ class UserServiceImp implements UserService
      */
     public function delete($id)
     {
+        if ($this->userRepository->isReferencedByHotel($id)) {
+            throw new Exception('Cannot delete this user because it is referenced by a hotel.');
+        }
         $user = $this->userRepository->find($id);
         if ($user) {
             return $this->userRepository->delete($id);
