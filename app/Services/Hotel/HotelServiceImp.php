@@ -5,6 +5,7 @@ namespace App\Services\Hotel;
 use App\Repositories\HotelRepository;
 use App\Repositories\CityRepository;
 use \Exception;
+use App\Exceptions\MessageException;
 
 class HotelServiceImp implements HotelService
 {
@@ -24,12 +25,6 @@ class HotelServiceImp implements HotelService
 
     public function create($data)
     {
-        if ($this->hotelRepository->findBy('name', $data['name'])) {
-            throw new Exception('The hotel name already exists');
-        }
-        if ($this->hotelRepository->findBy('hotel_code', $data['hotel_code'])) {
-            throw new Exception('The hotel code already exists');
-        }
         $this->hotelRepository->create($data);
     }
 
@@ -38,21 +33,9 @@ class HotelServiceImp implements HotelService
         $hotel = $this->hotelRepository->find($id);
 
         if ($hotel) {
-            if (
-                $hotel->name !== $data['name']
-                && $this->hotelRepository->findBy('name', $data['name'])
-            ) {
-                throw new Exception('The hotel name already exists');
-            }
-            if (
-                $hotel->hotel_code !== $data['hotel_code']
-                && $this->hotelRepository->findBy('hotel_code', $data['hotel_code'])
-            ) {
-                throw new Exception('The hotel code already exists');
-            }
             $this->hotelRepository->update($data, $id);
         } else {
-            throw new Exception('Hotel not found');
+            throw new MessageException('Hotel not found');
         }
     }
 
@@ -62,7 +45,7 @@ class HotelServiceImp implements HotelService
         if ($hotel) {
             $this->hotelRepository->delete($id);
         } else {
-            throw new Exception('Hotel not found');
+            throw new MessageException('Hotel not found');
         }
     }
 
@@ -72,7 +55,7 @@ class HotelServiceImp implements HotelService
         if ($hotel) {
             return $hotel;
         } else {
-            throw new Exception('Hotel not found');
+            throw new MessageException('Hotel not found');
         }
     }
 
@@ -90,7 +73,7 @@ class HotelServiceImp implements HotelService
             if ($city) {
                 $query->where('city_id', $city->id);
             } else {
-                throw new Exception('City not found');
+                throw new MessageException('City not found');
             }
         }
 
@@ -102,7 +85,7 @@ class HotelServiceImp implements HotelService
             $query->where('name', 'like', '%' . $hotelName . '%');
         }
 
-        return $query->orderBy('city_id', 'asc');
+        return $query->orderBy('created_at', 'desc');
     }
 
     public function searchForUser($userId, $cityId = null, $hotelCode = null, $hotelName = null)
@@ -114,7 +97,7 @@ class HotelServiceImp implements HotelService
             if ($city) {
                 $query->where('city_id', $city->id);
             } else {
-                throw new Exception('City not found');
+                throw new MessageException('City not found');
             }
         }
 
@@ -126,6 +109,6 @@ class HotelServiceImp implements HotelService
             $query->where('name', 'like', '%' . $hotelName . '%');
         }
 
-        return $query->orderBy('city_id', 'asc');
+        return $query->orderBy('created_at', 'desc');
     }
 }
