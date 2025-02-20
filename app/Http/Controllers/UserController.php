@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Exception;
+use App\Exceptions\MessageException;
 
 class UserController extends Controller
 {
@@ -54,7 +55,10 @@ class UserController extends Controller
 
             return redirect()->route('user.index')
                 ->with('success', __('messages.user_created_successfully'));
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (MessageException $e) {
+            return redirect()->route('user.create')
+                ->with('error', $e->getMessage());
+        } catch (Exception $e) {
             Log::error("Create User Error: " . $e->getMessage());
             return redirect()->route('user.create')
                 ->with('error', __('messages.user_create_error'));
@@ -87,16 +91,13 @@ class UserController extends Controller
 
             return redirect()->route('user.index')
                 ->with('success', __('messages.user_updated_successfully'));
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (MessageException $e) {
             return redirect()->route('user.edit', $id)
-                ->with('error', __('messages.user_update_error'));
+                ->with('error', $e->getMessage());
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return redirect()->route('user.edit', $id)
-                ->with(
-                    'error',
-                    ('messages.user_update_error')
-                );
+                ->with('error', __('messages.user_update_error'));
         }
     }
 
@@ -104,17 +105,17 @@ class UserController extends Controller
     {
         try {
             $user = $this->userService->find($id);
-            Log::info(1);
             if ($user->hotels()->count() > 0) {
-                Log::info(2);
                 return redirect()->route('user.index')
                     ->with('error', __('messages.user_assigned_to_hotels'));
             }
-            Log::info(3);
             $this->userService->delete($id);
 
             return redirect()->route('user.index')
                 ->with('success', __('messages.user_deleted_successfully'));
+        } catch (MessageException $e) {
+            return redirect()->route('user.index')
+                ->with('error', $e->getMessage());
         } catch (\Exception $e) {
             return redirect()->route('user.index')
                 ->with('error', __('messages.user_delete_error'));

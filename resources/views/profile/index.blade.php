@@ -21,13 +21,9 @@
         </div>
     @endif
 
-    @if($errors->any())
+    @if(session('error'))
         <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            {{ session('error') }}
         </div>
     @endif
 
@@ -48,37 +44,48 @@
                             onclick="showAvatarOptions()">
                     </div>
                     <input type="file" id="avatar" name="avatar" class="d-none" onchange="previewAvatar()">
+                    @error('avatar')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="username">Username *</label>
                             <input type="text" class="form-control" id="username" name="username"
-                            value="{{ $user->username }}" required>
+                            value="{{ $user->username }}">
+                            @error('username')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
+                            <label for="email">Email *</label>
                             <input type="email" class="form-control" id="email" name="email"
-                            value="{{ $user->email }}" required>
+                            value="{{ $user->email }}">
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="first_name">First Name</label>
+                            <label for="first_name">First Name *</label>
                             <input type="text" class="form-control" id="first_name" name="first_name"
-                            value="{{ $user->first_name }}" required>
+                            value="{{ $user->first_name }}">
+                            @error('first_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="form-group">
-                            <label for="last_name">Last Name</label>
+                            <label for="last_name">Last Name *</label>
                             <input type="text" class="form-control" id="last_name" name="last_name"
-                            value="{{ $user->last_name }}" required>
+                            value="{{ $user->last_name }}">
+                            @error('last_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="password">New Password</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                        </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-success mt-3"><i class="fas fa-save"></i> Update Profile</button>
                         </div>

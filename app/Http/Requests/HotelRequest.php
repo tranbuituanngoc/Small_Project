@@ -26,8 +26,8 @@ class HotelRequest extends FormRequest
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
             // Rules for updating a hotel
             return [
-                'name' => ['required', 'string', 'max:255'],
-                'hotel_code' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255', Rule::unique('hotels', 'name')->ignore($this->hotel)],
+                'hotel_code' => ['required', 'string', 'max:255', Rule::unique('hotels', 'hotel_code')->ignore($this->hotel)],
                 'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
                 'tel' => ['required', 'string', 'size:10', 'regex:/^[0-9]+$/'],
                 'fax' => ['required', 'string', 'min:10', 'max: 12', 'regex:/^[0-9]+$/'],

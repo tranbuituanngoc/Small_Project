@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -32,8 +33,8 @@ class UserRequest extends FormRequest
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
             // Rules for updating a user
             return [
-                'username' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
+                'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($this->user)],
+                'email' => ['required', 'string', 'email:rfc,dns', 'max:100', Rule::unique('users', 'email')->ignore($this->user)],
                 'first_name' => ['required', 'string', 'max:255'],
                 'last_name' => ['required', 'string', 'max:255'],
                 'avatar' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],

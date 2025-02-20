@@ -25,9 +25,12 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('hotels', HotelController::class);
+
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Route::get("/hotels", [HotelController::class, 'index'])->name('hotel.index');
     Route::prefix("hotels")->name("hotel.")->group(function () {
         Route::get('/', [HotelController::class, 'index'])->name('index');
         Route::get('/create', [HotelController::class, 'create'])->name('create');

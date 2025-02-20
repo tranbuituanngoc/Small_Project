@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Exceptions\MessageException;
 use App\Repositories\UserRepository;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Log;
@@ -46,15 +47,12 @@ class UserServiceImp implements UserService
      */
     public function create(array $data)
     {
-        if (!$this->checkDuplicateEmailAndUsername($data)) {
-            throw new \Exception('Email or username already exists');
-        }
         if (!isset($data['role_id'])) {
             $memberRole = Role::where('name', 'member')->first();
             if ($memberRole) {
                 $data['role_id'] = $memberRole->id;
             } else {
-                throw new Exception('Default role "member" not found');
+                throw new MessageException('Default role "member" not found');
             }
         }
 
@@ -85,12 +83,6 @@ class UserServiceImp implements UserService
     {
         $user = $this->userRepository->find($id);
 
-        if ($user->email !== $data['email']) {
-            $existUser = $this->userRepository->findBy('email', $data['email']);
-            if ($existUser) {
-                throw new \Exception('Email already exists');
-            }
-        }
         if ($user) {
             $data['username'] = !empty($data['username']) ? $data['username'] : $user->name;
             $data['email'] = !empty($data['email']) ? $data['email'] : $user->email;
@@ -104,7 +96,7 @@ class UserServiceImp implements UserService
             $this->userRepository->update($data, $id);
             return $user;
         } else {
-            throw new \Exception('User not found');
+            throw new MessageException('User not found');
         }
     }
 
@@ -117,13 +109,13 @@ class UserServiceImp implements UserService
     public function delete($id)
     {
         if ($this->userRepository->isReferencedByHotel($id)) {
-            throw new Exception('Cannot delete this user because it is referenced by a hotel.');
+            throw new MessageException('Cannot delete this user because it is referenced by a hotel.');
         }
         $user = $this->userRepository->find($id);
         if ($user) {
             return $this->userRepository->delete($id);
         } else {
-            throw new \Exception('User not found');
+            throw new MessageException('User not found');
         }
     }
 
@@ -138,18 +130,6 @@ class UserServiceImp implements UserService
     {
         $user = $this->userRepository->find($id);
 
-        if ($user->email !== $data['email']) {
-            $existUser = $this->userRepository->findBy('email', $data['email']);
-            if ($existUser) {
-                throw new \Exception('Email already exists');
-            }
-        }
-        if ($user->username !== $data['username']) {
-            $existUser = $this->userRepository->findBy('username', $data['username']);
-            if ($existUser) {
-                throw new \Exception('Username already exists');
-            }
-        }
         if ($user) {
             $data['username'] = !empty($data['username']) ? $data['username'] : $user->username;
             $data['email'] = !empty($data['email']) ? $data['email'] : $user->email;
@@ -160,28 +140,7 @@ class UserServiceImp implements UserService
             $this->userRepository->update($data, $id);
             return $user;
         } else {
-            throw new \Exception('User not found');
+            throw new MessageException('User not found');
         }
-    }
-
-    /**
-     * Check if duplicate email and username
-     *
-     * @param array $data
-     * @return bool
-     */
-    public function checkDuplicateEmailAndUsername(array $data)
-    {
-        $user = $this->userRepository->findBy('email', $data['email']);
-        if ($user) {
-            return false;
-        }
-
-        $user = $this->userRepository->findBy('username', $data['username']);
-        if ($user) {
-            return false;
-        }
-
-        return true;
     }
 }

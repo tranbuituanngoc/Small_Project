@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use App\Exceptions\MessageException;
 
 class RoleController extends Controller
 {
@@ -40,6 +41,10 @@ class RoleController extends Controller
             $this->roleService->create($data);
             return redirect()->route('role.index')
                 ->with('success', __('messages.role_created_successfully'));
+        } catch (MessageException $e) {
+            return
+                redirect()->back()
+                ->with('error', $e->getMessage());
         } catch (\Exception $e) {
             Log::error("Create Role Error: " . $e->getMessage());
             return redirect()->back()
@@ -60,6 +65,9 @@ class RoleController extends Controller
             $this->roleService->update($data, $id);
             return redirect()->route('role.index')
                 ->with('success', __('messages.role_updated_successfully'));
+        } catch (MessageException $e) {
+            return redirect()->back()
+                ->with('error', $e->getMessage());
         } catch (\Exception $e) {
             Log::error("Update Role Error: " . $e->getMessage());
             return redirect()->back()
@@ -81,6 +89,10 @@ class RoleController extends Controller
 
             return redirect()->route('role.index')
                 ->with('success', __('messages.role_deleted_successfully'));
+        } catch (MessageException $e) {
+            return
+                redirect()->route('role.index')
+                ->with('error', $e->getMessage());
         } catch (Exception $e) {
             Log::error("Delete Role Error: " . $e->getMessage());
             return redirect()->route('role.index')

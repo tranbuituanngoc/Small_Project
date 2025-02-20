@@ -2,9 +2,9 @@
 
 namespace App\Services\Role;
 
-use App\Models\Role;
 use App\Repositories\RoleRepository;
 use \Exception;
+use App\Exceptions\MessageException;
 use Illuminate\Support\Facades\Log;
 
 class RoleServiceImp implements RoleService
@@ -23,14 +23,10 @@ class RoleServiceImp implements RoleService
 
     public function create($data)
     {
-        Log::info('Check: ' . $this->checkAdminAndMemberRole());
         if (!$this->checkAdminAndMemberRole()) {
-            if ($this->roleRepository->find('name', $data['name'])) {
-                throw new Exception('The role name is already exist');
-            }
             $this->roleRepository->create($data);
         } else {
-            throw new Exception('Cannot create a new role if Admin and Member already exist.');
+            throw new MessageException('Cannot create a new role if Admin and Member already exist.');
         }
     }
 
@@ -38,25 +34,22 @@ class RoleServiceImp implements RoleService
     {
         $role = $this->roleRepository->find($id);
         if ($role) {
-            if (isset($data['name']) && $this->roleRepository->find('name', $data['name'])) {
-                throw new Exception('The role name is already exist');
-            }
             $this->roleRepository->update($id, $data);
         } else {
-            throw new Exception('Role not found');
+            throw new MessageException('Role not found');
         }
     }
 
     public function delete($id)
     {
         if ($this->roleRepository->isReferencedByUser($id)) {
-            throw new Exception('Cannot delete this role because it is referenced by a user.');
+            throw new MessageException('Cannot delete this role because it is referenced by a user.');
         }
         $role = $this->roleRepository->find($id);
         if ($role) {
             $this->roleRepository->delete($id);
         } else {
-            throw new Exception('Role not found');
+            throw new MessageException('Role not found');
         }
     }
 

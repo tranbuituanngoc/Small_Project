@@ -26,5 +26,8 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+        $this->renderable(function (MessageException $e, $request) {
+            return response()->view('errors.custom', ['message' => $e->getMessageForUser()], 500);
+        });
     }
 }

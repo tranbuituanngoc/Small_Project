@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class RoleRequest extends FormRequest
 {
@@ -19,7 +21,7 @@ class RoleRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array'unique:roles'
      */
     public function rules(): array
     {
@@ -29,7 +31,7 @@ class RoleRequest extends FormRequest
             ];
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
             return [
-                'name' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255', Rule::unique('roles', 'name')->ignore($this->role)],
             ];
         }
     }

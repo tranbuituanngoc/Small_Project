@@ -3,25 +3,20 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileRequest extends FormRequest
 {
     public function rules(): array
     {
+        $userId = Auth::id();
+
         return [
-            'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email:rfc,dns', 'max:255',],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($userId)],
+            'email' => ['required', 'string', 'email:rfc,dns', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'password' => [
-                'nullable',
-                'string',
-                'min:8',
-                'regex:/[A-Z]/',
-                'regex:/[a-z]/',
-                'regex:/[0-9]/',
-                'regex:/[@$!%*?&#]/'
-            ],
             'avatar' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
         ];
     }
@@ -37,8 +32,12 @@ class ProfileRequest extends FormRequest
             'avatar.max' => 'Avatar must be less than 10MB',
             'first_name.required' => 'First name is required',
             'last_name.required' => 'Last name is required',
-            'password.min' => 'Password must be at least :min characters',
-            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character',
+            'username.unique' => 'Username already exists',
+            'email.unique' => 'Email already exists',
+            'username.max' => 'Username must not be greater than :max characters',
+            'email.max' => 'Email must not be greater than :max characters',
+            'first_name.max' => 'First name must not be greater than :max characters',
+            'last_name.max' => 'Last name must not be greater than :max characters',
         ];
     }
 
