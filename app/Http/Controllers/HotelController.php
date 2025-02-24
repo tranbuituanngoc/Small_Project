@@ -78,12 +78,14 @@ class HotelController extends Controller
         }
     }
 
-    public function view($id)
+    public function show($id)
     {
         $hotel = $this->hotelService->find($id);
 
         return view('hotel.view', compact('hotel'));
     }
+
+
 
     public function edit($id)
     {
