@@ -51,10 +51,14 @@
                         <td>{{ $user->role->name }}</td>
                         <td>
                             <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})"
-                                data-toggle="modal" data-target="#confirmDeleteModal">
-                                Delete
-                            </button>
+                            @if ($user->id != auth()->id())
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})"
+                                    data-toggle="modal" data-target="#confirmDeleteModal">
+                                    Delete
+                                </button>
+                            @else
+                                <button class="btn btn-danger btn-sm" disabled>Delete</button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

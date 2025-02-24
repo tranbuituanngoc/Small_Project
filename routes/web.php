@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [HotelController::class, 'index'])->name('index');
         Route::get('/create', [HotelController::class, 'create'])->name('create');
         Route::post('/', [HotelController::class, 'store'])->name('store');
-        Route::get('/{id}', [HotelController::class, 'view'])->name('view');
+        Route::get('/{id}', [HotelController::class, 'show'])->name('view');
         Route::get('/{id}/edit', [HotelController::class, 'edit'])->name('edit');
         Route::put('/{id}', [HotelController::class, 'update'])->name('update');
         Route::delete('/{id}', [HotelController::class, 'destroy'])->name('destroy');
